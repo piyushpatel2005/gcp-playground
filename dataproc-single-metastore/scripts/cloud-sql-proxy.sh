@@ -25,8 +25,10 @@ set -euo pipefail
 
 HIVE_USER_DEFAULT='hive'
 HIVE_PASSWORD_DEFAULT='hive'
-SQL_USER_DEFAULT='root'
-SQL_PASSWORD_DEFAULT='changeme'
+# SQL_USER_DEFAULT='root'
+# SQL_PASSWORD_DEFAULT='changeme'
+SQL_USER_DEFAULT="root"
+SQL_PASSWORD_DEFAULT="changeme"
 
 readonly enable_cloud_sql_metastore="$(/usr/share/google/get_metadata_value attributes/enable-cloud-sql-hive-metastore || echo 'true')"
 
@@ -245,6 +247,13 @@ EOF
 
 }
 
+function copy_project_scripts() {
+  mkdir -p /projects/scripts
+  mkdir -p /projects/data
+  gsutil -m rsync -r gs://dulcet-record-319917-tf-state/data /projects/data
+  gsutil -m rsync -r gs://dulcet-record-319917-tf-state/scripts /projects/scripts
+}
+
 function main() {
 
   local role
@@ -297,6 +306,7 @@ function main() {
     if [[ $enable_cloud_sql_metastore = "true" ]]; then
       configure_sql_client
     fi
+    copy_project_scripts
   else
     # This part runs on workers.
     # Run installation on workers when enable_proxy_on_workers is set.

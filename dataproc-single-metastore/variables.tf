@@ -27,3 +27,19 @@ variable "storage_class" {
   type    = string
   default = "MULTI_REGIONAL"
 }
+
+variable "data_directory" {
+  type    = string
+  default = "./data"
+}
+
+variable "state_bucket" {
+  type    = string
+  default = "dulcet-record-319917-tf-state"
+}
+
+variable "scripts_directory" {
+  type = string
+  description = "The scripts directory to upload to GCP"
+  default = "./scripts"
+}

@@ -16,6 +16,7 @@ echo "deb [signed-by=/usr/share/keyrings/cloud.google.gpg] https://packages.clou
 curl https://packages.cloud.google.com/apt/doc/apt-key.gpg | sudo apt-key --keyring /usr/share/keyrings/cloud.google.gpg add -
 sudo apt-get update && sudo apt-get install google-cloud-cli
 gcloud --help
+gcloud init
 # terraform
 sudo apt-get update && sudo apt-get install -y gnupg software-properties-common
 wget -O- https://apt.releases.hashicorp.com/gpg | \
@@ -31,3 +32,7 @@ terraform --help
 ## Deploy Dataproc cluster using gcloud command
 
 ```shell
+# First make sure you enable services on GCP.
+gcloud enable <servicename> # servicename can be found from  UI
+gcloud enable staroge.googleapis.com
+```

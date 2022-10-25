@@ -21,13 +21,13 @@ resource "google_dataproc_cluster" "cluster1" {
       image_version = "1.3"
 
       override_properties = {
-        "hive:hive.metastore.warehouse.dir" = "gs://${google_storage_bucket.warehouse.name}/datasets"
+        "hive:hive.metastore.warehouse.dir" = "gs://${google_storage_bucket.warehouse.name}/user/hive/warehouse"
       }
     }
 
     initialization_action {
       script      = "gs://${google_storage_bucket_object.cloud_sql_proxy_script.bucket}/${google_storage_bucket_object.cloud_sql_proxy_script.name}"
-      timeout_sec = 500
+      timeout_sec = 900
     }
   }
 }

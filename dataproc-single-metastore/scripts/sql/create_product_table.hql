@@ -1,0 +1,11 @@
+CREATE DATABASE IF NOT EXISTS testdb;
+CREATE TABLE IF NOT EXISTS testdb.products(
+  id INT,
+  brand STRING,
+  item STRING,
+  price DOUBLE
+) 
+ROW FORMAT DELIMITED
+FIELDS TERMINATED BY ','
+STORED AS TEXTFILE
+TBLPROPERTIES('skip.header.line.count'='1');
