@@ -65,3 +65,16 @@ gcloud storage objects compose gs://<bucket>/object1 gs://<bucket>/object2 gs://
 Cloud storage permissions are assigned using roles in GCP. There are few general-purpose built-in roles available in GCP which can be useful to provide permissions in most case. The documentation for that can be found [here](https://cloud.google.com/storage/docs/access-control/iam-roles). The detailed information about each of the permissions assigned to those roles are mentioned [here](https://cloud.google.com/storage/docs/access-control/iam-permissions)
 
 ## Creating buckets using Terraform and retrieving information
+
+```shell
+cd tf-examples/gcp-bucket
+export PROJECT_ID=<PROJECT_ID>
+# By default Terraform reads below variable for GCP credentials
+export GOOGLE_APPLICATION_CREDENTIALS=/path/to/json/keyfile
+gcloud init
+terraform init
+terraform plan -var project=$PROJECT_ID
+terraform apply -var project=$PROJECT_ID
+terraform destroy -var project=$PROJECT_ID
+terraform console -var project=$PROJECT_ID
+````
