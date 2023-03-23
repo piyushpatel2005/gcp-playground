@@ -34,3 +34,4 @@ For Terraform, we can specify exact version of the terraform provider plugin. If
 For different environments, we can different variable files which will hold the variable values, like `staging.tfvars` or `prod.tfvars`. To reference those files for each environment, we can use the command `terraform apply -var-file="prod.tfvars"`. If we don't use `-var-file` option, by default `terraform.tfvars`  file will be used as a variable file.
 
 The `output` block can be used to output any specific attribute value of a resource. The available attributes can be found in official provider documentation under *Attribute Reference* section.
+To hide sensitive information, we can use `sensitive = true` in the output declaration. This will avoid displaying those output unless explicitly invoked using `terraform output <output_name>`

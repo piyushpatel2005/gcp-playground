@@ -1,8 +1,8 @@
 provider "google" {
-    project = "playground-s-11-64478b9a"
+    project = "<GCP_PROJECT_ID>"
     region = "us-west1"
     zone = "us-west1-a"
-    credentials = "/Users/piyush/Downloads/playground-s-11-64478b9a-888aeb7da75d.json"
+    credentials = "/path/to/credentials_file"
 }
 
 terraform {
