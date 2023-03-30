@@ -1,8 +1,8 @@
 provider "google" {
-    project = "<GCP_PROJECT_ID>"
+    project = "${var.project}"
     region = "us-west1"
     zone = "us-west1-a"
-    credentials = "/path/to/credentials_file"
+    credentials = "${file("credentials.json")}"
 }
 
 terraform {

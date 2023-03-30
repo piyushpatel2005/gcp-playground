@@ -36,3 +36,10 @@ terraform --help
 gcloud enable <servicename> # servicename can be found from  UI
 gcloud enable staroge.googleapis.com
 ```
+
+## Services
+
+1. [Cloud Storage](tf-examples/gcp-bucket/README.md)
+2. [Compute Engines](tf-examples/compute-engine/README.md)
+3. [Cloud SQL](tf-examples/cloud-sql/README.md)
+4. [Cloud Composer](tf-examples/composer/README.md)
