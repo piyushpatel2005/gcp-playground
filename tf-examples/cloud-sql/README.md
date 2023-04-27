@@ -22,15 +22,15 @@ gcloud sql databases delete dbname --instance mydb
 ```
 
 ```shell
-export PROJECT_ID=<PROJECT_ID>
+export GOOGLE_PROJECT=<PROJECT_ID>
 # By default Terraform reads below variable for GCP credentials
 export GOOGLE_APPLICATION_CREDENTIALS=/path/to/json/keyfile
 gcloud init
 terraform init
-terraform plan -var project=$PROJECT_ID
-terraform apply -var project=$PROJECT_ID
-terraform destroy -var project=$PROJECT_ID
-terraform console -var project=$PROJECT_ID
+terraform plan -var project=$GOOGLE_PROJECT
+terraform apply -var project=$GOOGLE_PROJECT
+terraform destroy -var project=$GOOGLE_PROJECT
+terraform console -var project=$GOOGLE_PROJECT
 ```
 
 ## Instructions for Windows Command Prompt
