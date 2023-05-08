@@ -3,3 +3,5 @@
 **/.terraform.lock.hcl
 **/credentials.json
 jenkins
+smart-data/env
+smart-data
