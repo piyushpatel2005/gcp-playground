@@ -1,5 +1,5 @@
 resource "google_composer_environment" "composer_sbx" {
-  name = "composer-test2"
+  name = "composer-test"
   project = "${var.project}"
   region = "${var.region}"
   config {
@@ -23,11 +23,11 @@ resource "google_composer_environment" "composer_sbx" {
       }
 
       web_server {
-        cpu = 1
-        memory_gb = 1
+        cpu = 2
+        memory_gb = 2
       }
       worker {
-        cpu = 1
+        cpu = 2
         memory_gb = 3
       }
     }
@@ -43,10 +43,12 @@ data "google_composer_environment" "composer_sbx" {
   ]
 }
 
-
-# resource "google_storage_bucket_object" "sample_dag" {
-#   name = "dags/tutorial2_dag.py"
-
-#   content = "${file("./dags/tutorial2_dag.py")}"
-#   bucket  = "${trimsuffix("${trimprefix("${local.dag_bucket}", "gs://")}", "/dags")}"
-# }
+resource "google_storage_bucket_object" "dags" {
+  name = "dags/${trimsuffix("${each.value}", ".py")}"
+  for_each = fileset("./dags/", "*.py")
+  source = "./dags/${each.value}"
+  bucket = "${trimsuffix("${trimprefix("${local.dag_bucket}", "gs://")}", "/dags")}"
+  depends_on = [
+    google_composer_environment.composer_sbx
+  ]
+}

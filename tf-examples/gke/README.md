@@ -69,10 +69,12 @@ kubectl delete pod <pod_name>
 ### Services
 
 This is to expose application running in pod.
-- ClusterIP: expose internal to K8s cluster
-- NodePort: expose internet or internal
+- ClusterIP: expose internal to K8s cluster, used for internal communications between applications inside K8s cluster with stable internal IP
+- NodePort: expose internet or internal. clients send requests to IP address of a worker node on one or more NodePort values that are exposed using service.
 - LoadBalancer: internet or internal. This create GCP load balancer. It will have port and targetport which represents K8s service port and target pod port.
-- Ingress: internet or internal
+- Ingress: internet or internal. Ingress is advanced load balancer which supports context path based routing, SSL, SSL redirect and operates on layer 7 (HTTP).
+- ExternalName: Internal clients use the DNS name of a service as an alias for external DNS name.
+- Headless Service: used for discovery of individual pods which allows another service to interact directly with Pods instead of any proxy.
 
 ```shell
 kubectl run <pod-name> --image <container-image> # this pod has app running on port 80
@@ -169,4 +171,39 @@ kubectl delete deploy <deployment-name>
 kubectl delete svc <service-name>
 ```
 
+### ClusterIP
+
+```shell
+kubectl create deployment <deployment-name> --image=stacksimply/kube-helloworld:1.0.0
+kubectl get deploy
+# Deploy backend app
+kubectl expose deployment <deployment-name> --port=8080 --target-port=8080 --name=<svc-name> # Default service type is ClusterIP, user service name as my-backend-service for given containers
+kubectl get svc
+kubectl create deployment my-frontend-nginx-app --image=stacksimplify/kube-frontend-nginx:1.0.0
+kubectl get deploy
+kubectl expose deployment my-frontend-nginx-app --type=LoadBalancer --port=80 --target-port=80 --name=my-frontend-service
+kubectl get svc # Access http://<external-ip>/hello
+kubectl scale --replicas=2 deployment/<deployment-name>
+kubectl get pods
+kubectl delete <svc-name> # both frontend and backend
+kubectl delete <deployment-name> # both frontend and backend
+```
+
 ## Creating resources in Declarative manner
+
+Each kubernetes manifest files will have following nodes. To refer to what values to put under these config, check the [Kubernetes API Reference](https://kubernetes.io/docs/reference/kubernetes-api/) page under Workload Resources. Similarly, we can use [One Page API Reference](https://kubernetes.io/docs/reference/generated/kubernetes-api/v1.27/) from [Kubernetes Docs](https://kubernetes.io/docs/reference/)
+- apiVersion: version of kubernetes object version
+- kind: kubernetes object type
+- metadata: where we define name and labels for object
+- spec: real definition of the object. This will be data for some of the K8s object.
+
+```shell
+cd examples
+kubectl apply -f 02-pod-declarative/
+kubectl delete -f 02-pod-declarative/
+kubectl apply -f 03-replicaset-declarative/01-replicaset-definition.yaml
+kubectl get rs
+kubectl apply -f 03-replicaset-declarative/02-loadbalancer-definition.yaml
+kubectl get svc # Access http://<external-ip>/
+kubectl delete -f 03-replicaset-declarative/02-loadbalancer-definition.yaml -f 03-replicaset-declarative/01-replicaset-definition.yaml
+```
