@@ -5,3 +5,5 @@
 jenkins
 smart-data/env
 smart-data
+**/env
+**/__pycache__
