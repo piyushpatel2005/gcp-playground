@@ -6,9 +6,9 @@ class BaseConfig:
 
 
 class LocalConfig:
-    input_path = Path.cwd().joinpath("s3").joinpath("examples").joinpath("rawxml")
-    output_path = Path.cwd().joinpath("demo").joinpath("output").joinpath("csv")
-    output_format = "csv"
+    input_path = Path.cwd().joinpath("raw").joinpath("xml")
+    output_path = Path.cwd().joinpath("raw").joinpath("json")
+    output_format = "json"
 
 
 config = {

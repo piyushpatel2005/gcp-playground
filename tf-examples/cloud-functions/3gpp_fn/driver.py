@@ -7,10 +7,11 @@ import csv
 import time
 import os
 import sys
-from GPPXml import GPPXml
+from GPPXmlFlat import GPPXmlFlat
 import argparse
 from config import config
 from pathlib import Path
+import shutil
 
 logger = logging.getLogger()
 logger.setLevel(logging.INFO)
@@ -28,7 +29,7 @@ def make_dirs(path):
 
 
 def cleanup_dirs(path):
-    os.removedirs(path)
+    shutil.rmtree(path)
 
 
 def write_to_csv(header, records, out_fname):
@@ -65,29 +66,36 @@ def parse_file(file, output_path):
     xmlstr = ET.tostring(xml_data, encoding='utf8', method='xml')
     xml = dict(xmltodict.parse(xmlstr))
 
-    x = GPPXml(xml.get('measCollecFile'))
+    x = GPPXmlFlat(xml.get('measCollecFile'))
     output_filename = file.split(".")[0]
-    records = x.convert_to_records(file,
+    output_filename = str(Path.joinpath(output_path,  os.path.basename(file)).with_suffix(".json"))
+    records = x.convert_to_flat_records(file,
                                    datetime.datetime.utcnow().strftime("%Y-%m-%dT%H:%M:%S.000Z"),
-                                   Path.joinpath(output_path,  str(file)).with_suffix(".csv")
+                                   str(Path.joinpath(output_path,  os.path.basename(file)).with_suffix(".json"))
                                    )
     # records = x.convert_to_records('s3://' + bucket + '/' + key,
     #                                datetime.datetime.utcnow().strftime("%Y-%m-%dT%H:%M:%S.000Z"),
     #                                's3://' + bucket + '/' + out_transform_prefix + '/' + tmp_out_fname
     #                                )
-    print(records)
+    # print(records)
+    write_to_json(records, output_filename)
 
 def main():
     from pathlib import Path
     args = parse_args()
     # output_path = Path.cwd().joinpath("demo").joinpath("output").joinpath("csv")
+    
     conf = config[args.env]
+    output_path = conf.output_path
+    print('Output path: ', output_path)
+    if os.path.exists(output_path):
+        cleanup_dirs(output_path)
+    os.makedirs(output_path)
     with os.scandir(conf.input_path) as entries:
         for entry in entries:
             file_name = Path.joinpath(conf.input_path, entry.name)
             parse_file(file_name, conf.output_path)
-    
-    # os.makedirs(output_path)
+    # parse_file(Path.joinpath(conf.input_path).joinpath('a2.xml'), conf.output_path)
     # cleanup_dirs(output_path)
 
 if __name__ == '__main__':
