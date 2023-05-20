@@ -7,3 +7,4 @@ smart-data/env
 smart-data
 **/env
 **/__pycache__
+**/tmp
