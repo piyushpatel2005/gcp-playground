@@ -1,0 +1,169 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bulma@0.9.4/css/bulma-rtl.min.css">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bulma-carousel@4.0.3/dist/css/bulma-carousel.min.css" />
+  <script src="https://cdn.jsdelivr.net/npm/bulma-carousel@4.0.3/dist/js/bulma-carousel.min.js"></script>
+  <title>RAN App</title>
+</head>
+
+<body>
+  <div class="container" id="navbar-container">
+    <nav class="navbar" role="navigation" aria-label="main navigation">
+      <div class="navbar-brand">
+        <h1 class="is-size-2">RAN App</h1>
+
+        <a role="button" class="navbar-burger" aria-label="menu" aria-expanded="false" data-target="navbarBasicExample">
+          <span aria-hidden="true"></span>
+          <span aria-hidden="true"></span>
+          <span aria-hidden="true"></span>
+        </a>
+      </div>
+
+      <div id="navbarBasicExample" class="navbar-menu">
+        <div class="navbar-start">
+          <a class="navbar-item">
+            Home
+          </a>
+
+          <a class="navbar-item">
+            Update List of KPI
+          </a>
+
+          <div class="navbar-item has-dropdown is-hoverable">
+            <a class="navbar-link">
+              More
+            </a>
+
+            <div class="navbar-dropdown">
+              <a class="navbar-item">
+                Available Counters
+              </a>
+              <a class="navbar-item">
+                Add New Counter
+              </a>
+              <a class="navbar-item">
+                Remove Counter
+              </a>
+              <hr class="navbar-divider">
+              <a class="navbar-item">
+                Update Counters
+              </a>
+            </div>
+          </div>
+        </div>
+
+        <div class="navbar-end">
+          <div class="navbar-item">
+            <div class="buttons">
+              <a class="button is-primary">
+                <strong>Sign up</strong>
+              </a>
+              <a class="button is-orange">
+                Log in
+              </a>
+            </div>
+          </div>
+        </div>
+      </div>
+    </nav>
+  </div>
+  <section class="section" id="carousel-section">
+    <div class="container">
+      <div id="carousel-demo" class="carousel pb-6" style="overflow: hidden">
+        <div class="item-1">
+          <div class="columns">
+            <div class="column is-half">
+              <h2 class="title is-1">Welcome to Our RAN PM Application</h2>
+              <p>
+                This application provides easy to use way for adding new counters to existing PM counter BigQuery table.
+                In order to add new counters to existing counters list, just click on the Add New Counter from the top
+                menu.
+              </p>
+              <br />
+
+              <div class="buttons is-left">
+                <button class="button is-medium is-orange button is-link is-light">
+                  SHOP NOW
+                </button>
+                <button class="button is-medium is-black is-primary is-light">CONTACT US</button>
+              </div>
+            </div>
+            <div class="column is-half">
+              <figure class="image is is-covered">
+                <img src="assets/images/sql.jpg" alt="" />
+              </figure>
+            </div>
+          </div>
+        </div>
+        <div class="item-2">
+          <div class="columns">
+            <div class="column is-half">
+              <h2 class="title is-1">Welcome to Our Fruits Shop</h2>
+              <p>
+                There are many variations of passages of Lorem Ipsum available, but the majority
+                have suffered alteration in some form, by injected humour, or randomised words
+                which don't look even slightly believable.
+              </p>
+              <br />
+
+              <div class="buttons is-left">
+                <button class="button is-medium is-orange button is-link is-light">
+                  SHOP NOW
+                </button>
+                <button class="button is-medium is-black is-primary is-light">CONTACT US</button>
+              </div>
+            </div>
+            <div class="column is-half">
+              <figure class="image is is-covered">
+                <img src="assets/images/sql.jpg" alt="" />
+              </figure>
+            </div>
+          </div>
+          <!-- Slide Content -->
+        </div>
+        <div class="item-3">
+          <!-- Slide Content -->
+          <div class="columns">
+            <div class="column is-half">
+              <h2 class="title is-1">Welcome to Our Fruits Shop</h2>
+              <p>
+                There are many variations of passages of Lorem Ipsum available, but the majority
+                have suffered alteration in some form, by injected humour, or randomised words
+                which don't look even slightly believable.
+              </p>
+              <br />
+
+              <div class="buttons is-left">
+                <button class="button is-medium is-orange button is-link is-light">
+                  SHOP NOW
+                </button>
+                <button class="button is-medium is-black is-primary is-light">CONTACT US</button>
+              </div>
+            </div>
+            <div class="column is-half">
+              <figure class="image is is-covered">
+                <img src="assets/images/sql.jpg" alt="" />
+              </figure>
+            </div>
+          </div>
+        </div>
+      </div>
+      <!-- End Carousel -->
+    </div>
+  </section>
+</body>
+
+</html>
+<script>
+  bulmaCarousel.attach('#carousel-demo', {
+    initialSlide: 0,
+    slidesToScroll: 1,
+    slidesToShow: 1,
+  });
+</script>
