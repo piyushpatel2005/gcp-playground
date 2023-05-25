@@ -11,6 +11,7 @@ variable zone {
     type = string
 }
 
+# Cloud functions
 variable function_name {
     type = string
     default = "function-trigger-on-gcs"
@@ -58,4 +59,15 @@ variable topic_name {
 variable output_format {
     type = string
     description = "The output format of the data files to convert to. (json or csv)"
+}
+
+# Dataflow
+variable bigquery_dataset {
+    type = string
+    description = "Dataset of BigQuery"
+}
+
+variable bigquery_table {
+    type = string
+    description = "Bigquery table name"
 }

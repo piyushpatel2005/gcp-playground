@@ -5,6 +5,13 @@ provider "google" {
   credentials = file("credentials.json")
 }
 
+provider "google-beta" {
+  project = var.project_id
+  region = var.region
+  zone = var.zone
+  credentials = file("credentials.json")
+}
+
 terraform {
   required_version = ">= 0.11.7"
   required_providers {
