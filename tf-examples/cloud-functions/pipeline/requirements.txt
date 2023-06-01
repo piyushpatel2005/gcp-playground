@@ -1,2 +1,5 @@
-apache-beam[gcp]==2.42.0
+apache-beam[gcp]==2.47.0
+xmltodict==0.12.0
+argparse~=1.4.0
+apache-beam
 wheel

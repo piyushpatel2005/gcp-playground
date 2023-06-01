@@ -17,12 +17,12 @@ from utils import output_schema
 class JsonData(typing.NamedTuple):
     file_format_version: str
     vendor_name: str
-    dn_prefix: float
-    local_dn: float
+    dn_prefix: str
+    local_dn: str
     element_type: str
     begin_time: str
-    end_time: int
-    me_local_dn: int
+    end_time: str
+    me_local_dn: str
     user_label: str
     sw_version: str
     meas_info_id: str
@@ -36,13 +36,30 @@ class JsonData(typing.NamedTuple):
     succImmediateAssignProcs: str
     meas_obj_ldn: str
     input_file: str
-    input_datetime: str
+    input_date_time: str
+    transformed_file: str
 
-beam.coders.registry.register_coder(CommonLog, beam.coders.RowCoder)
+    def __str__(self):
+        return f"JsonData({self.file_format_version}, {self.begin_time}, {self.granp_duration}, {self.granp_end_time}, {self.attImmediateAssignProcs}, {self.attTCHSeizures}, {self.succImmediateAssignProcs}, {self.succTCHSeizures}, {self.meas_info_id}, {self.meas_obj_ldn})"
+
+beam.coders.registry.register_coder(JsonData, beam.coders.RowCoder)
+
+class ConvertToJsonDataFn(beam.DoFn):
+  def process(self, element):
+    try:
+        row = json.loads(element.decode('utf-8'))
+        yield beam.pvalue.TaggedOutput('parsed_row', JsonData(**row))
+    except:
+        yield beam.pvalue.TaggedOutput('unparsed_row', element.decode('utf-8'))
 
 def parse_json(element):
     row = json.loads(element.decode('utf-8'))
+    # row = json.loads(element)
     return JsonData(**row)
+
+def print_row(row):
+    del row['transformed_file']
+    logging.info(row)
 
 def add_processing_timestamp(element):
     row = element._asdict()
@@ -64,6 +81,10 @@ def run():
     parser.add_argument(
         "--input_subscription",
         help='Input PubSub subscription of the form "projects/<PROJECT>/subscriptions/<SUBSCRIPTION>."',
+    )
+    parser.add_argument(
+        "--input_topic",
+        help='Input Pubsub Topic of the form projects/<PROJECT_ID>/topics/<TOPIC>'
     )
     parser.add_argument(
         "--output_table",
@@ -113,9 +134,17 @@ def run():
 
 
 
-    parsed_msgs = (p | 'ReadFromPubSub' >> beam.io.ReadFromPubSub(subscription=known_args.input_subscription, timestamp_attribute=None)
-                     | 'ParseJson' >> beam.Map(parse_json).with_output_types(JsonData))
+    parsed_msgs = (p 
+                   # | 'ReadFromPubSub' >> beam.io.ReadFromPubSub(subscription=known_args.input_subscription, timestamp_attribute=None)
+                   | 'ReadFromPubSub' >> beam.io.ReadFromPubSub(topic=known_args.input_topic)
+                   | 'ParseJson' >> beam.Map(parse_json).with_output_types(JsonData)
+                   # | 'ParseJson' >> beam.ParDo(ConvertToJsonDataFn()).with_outputs('parsed_row', 'unparsed_row').with_output_types(JsonData)
+                   )
 
+
+    (parsed_msgs
+     | 'ConsoleOutput' >> beam.Map(print_row))
+    
     (parsed_msgs
         | 'WriteRawToBQ' >> beam.io.WriteToBigQuery(
             known_args.output_table,

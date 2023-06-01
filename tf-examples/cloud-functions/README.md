@@ -73,3 +73,23 @@ gcloud functions deploy <fn-name> --set-env-vars FOO=bar ...
 4. Do not use `sys.exit()` for exiting in the middle of execution.
 5. For sending email from Cloud function, use SendGrid as it does not allow outbound connections on port 25.
 6. Reduce cold starts by setting a minimum number of instances. By default, Cloud functions scales the number of instances based on the number of requests. This can be changed by setting the number of instances that Cloud functions must keep ready to serve requests. This is great for applications which are latency-sensitive.
+
+
+
+
+```shell
+export GOOGLE_PROJECT="<PROJECT_ID>"
+terraform init
+terraform plan -var project_id=$GOOGLE_PROJECT
+terraform apply -var project_id=$GOOGLE_PROJECT
+terraform destroy -var project_id=$GOOGLE_PROJECT
+
+# From Cloud console, run Cloud shell and Open Terminal.
+# Copy files from pipeline.
+# Create virtual env using python -m venv env
+# pip install -r requirements.txt
+# source env/bin/activate
+# bash submit-beam.sh
+gsutil cp 3gpp_fn/raw/xml/nokia1.xml gs://essential-oven-380216-input/raw_xml/
+gsutil cp 3gpp_fn/raw/xml/nokia2.xml gs://essential-oven-380216-input/raw_xml/
+```

@@ -87,6 +87,6 @@ output_schema = {
         {
             "name": "input_date_time",
             "type": "STRING"
-        },
+        }
     ]
 }

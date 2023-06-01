@@ -96,44 +96,57 @@ resource "google_pubsub_subscription" "gpp_topic_subscription" {
 }
 
 # Dataflow
-resource "google_storage_bucket" "provisioning_bucket" {
-  name          = "dataflow-provisiong-function-${lower(random_id.bucket_prefix.hex)}"
-  storage_class = "REGIONAL"
-  location      = var.region
-  force_destroy = true
-}
+# resource "google_storage_bucket" "provisioning_bucket" {
+#   name          = "dataflow-provisiong-function-${lower(random_id.bucket_prefix.hex)}"
+#   storage_class = "REGIONAL"
+#   location      = var.region
+#   force_destroy = true
+# }
 
-resource "google_storage_bucket_object" "pubsub_subscription_to_bq" {
-  name    = "dataflow_pipeline/pubsub_to_bq.json"
-  content = file("${path.module}/pipeline/template.json")
-  bucket  = google_storage_bucket.provisioning_bucket.name
-}
+# resource "google_storage_bucket_object" "pubsub_subscription_to_bq" {
+#   name    = "dataflow_pipeline/pubsub_to_bq.json"
+#   content = file("${path.module}/pipeline/template.json")
+#   bucket  = google_storage_bucket.provisioning_bucket.name
+# }
 
-resource "google_bigquery_dataset" "dataset" {
-  dataset_id = var.bigquery_dataset
-  location   = "US"
-}
+# resource "google_bigquery_dataset" "dataset" {
+#   dataset_id = var.bigquery_dataset
+#   location   = "US"
+# }
 
-locals {
-  schema = [
-    {
-      name : "i",
-      type : "INTEGER",
-      mode : "NULLABLE",
-    },
-  ]
-  schema_oneline = join(",", [for i in local.schema : "${i["name"]}:${i["type"]}"])
-}
+# locals {
+#   schema = [
+#     {
+#       name : "i",
+#       type : "INTEGER",
+#       mode : "NULLABLE",
+#     },
+#   ]
+#   schema_oneline = join(",", [for i in local.schema : "${i["name"]}:${i["type"]}"])
+# }
 
-resource "google_dataflow_flex_template_job" "pubsub_to_bq_job" {
-  provider                = google-beta
-#   name                    = "${google_pubsub_subscription.gpp_topic_subscription.topic}-to-${replace(split(".", "${var.project_id}:${var.bigquery_dataset}.${var.bigquery_table}")[1], "_", "-")}-${lower(random_id.bucket_prefix.hex)}"
-  name = "gpp-topic-to-bq"
-  container_spec_gcs_path = "${google_storage_bucket.provisioning_bucket.url}/${google_storage_bucket_object.pubsub_subscription_to_bq.name}"
-  parameters = {
-    input_subscription = google_pubsub_subscription.gpp_topic_subscription.name
-    output_table       = var.bigquery_table
-    output_schema      = local.schema_oneline
-  }
-  region = var.region
-}
+# resource "google_dataflow_flex_template_job" "pubsub_to_bq_job" {
+#   provider                = google-beta
+# #   name                    = "${google_pubsub_subscription.gpp_topic_subscription.topic}-to-${replace(split(".", "${var.project_id}:${var.bigquery_dataset}.${var.bigquery_table}")[1], "_", "-")}-${lower(random_id.bucket_prefix.hex)}"
+#   name = "gpp-topic-to-bq"
+#   container_spec_gcs_path = "${google_storage_bucket.provisioning_bucket.url}/${google_storage_bucket_object.pubsub_subscription_to_bq.name}"
+#   parameters = {
+#     input_subscription = google_pubsub_subscription.gpp_topic_subscription.name
+#     output_table       = var.bigquery_table
+#     output_schema      = local.schema_oneline
+#   }
+#   region = var.region
+# }
+
+
+
+# Vertex AI notebook to deploy code
+# resource "google_notebooks_instance" "instance" {
+#   name = "demo-notebook"
+#   location = "us-west1-a"
+#   machine_type = "n1-standard-4"
+#   vm_image {
+#     project      = var.project_id
+#     image_family = "tf-latest-cpu"
+#   }
+# }
