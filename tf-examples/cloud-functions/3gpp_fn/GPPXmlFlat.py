@@ -393,19 +393,16 @@ class GPPXmlFlat:
 
                 num_records = len(mi.measValues) // len(mi.measureTypes)
                 num_columns = len(mi.measureTypes)
-                # print("Number of records:", num_records)
                 indx = 1
 
                 while indx <= num_records:
-                    # print("Processing indx: ", indx)
                     measure = dict()
                     for k in range(1, num_columns + 1):
-                        mt = mi.measureTypes[k-1]
-                        mv = mi.measValues[k * indx - 1]
-                        # print("Processing k: ", k * indx, mt.name, mv.value)
+                        mt = mi.measureTypes[(num_columns * (indx - 1) + k - 1) % num_columns]
+                        mv = mi.measValues[num_columns * (indx - 1) + k - 1]
+                        # print("Processing k: ", k, "measvalue: ", k * indx, mt.name, mv.value)
                         measure[mt.name] = mv.value
                     measure[header[15]] = mi.measValues[indx * k - 1].measObjLdn
-                    # print(measure)
                     indx += 1
 
                     file_details = dict()
