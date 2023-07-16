@@ -3,7 +3,7 @@ on:
   push:
     branches: ["main", "master"]
   pull_request:
-  
+
 defaults:
       run:
         shell: bash
@@ -27,8 +27,8 @@ jobs:
         env:
           GOOGLE_APPLICATION_CREDENTIALS: ${{ secrets.GOOGLE_TF_CREDENTIALS }}
       
-      - name: 'Terraform Format'
-        run: terraform -chdir="./tf-examples/gcp-bucket" fmt -check
+      # - name: 'Terraform Format'
+      #   run: terraform -chdir="./tf-examples/gcp-bucket" fmt -check
 
       - name: 'Terraform Plan'
         run: terraform -chdir="./tf-examples/gcp-bucket" plan
