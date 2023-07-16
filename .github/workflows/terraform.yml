@@ -1,0 +1,40 @@
+name: 'Terraform Plan'
+on: [push, pull_request]
+  branches: 
+    - 'master'
+    - 'main'
+defaults:
+      run:
+        shell: bash
+
+jobs:
+  terraform:
+    name: 'Terraform'
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: 'Checkout'
+        uses: actions/checkout@v2
+
+      - name: 'Terraform Setup'
+        uses: hashicorp/setup-terraform@v1
+        with:
+          cli_config_credentials_token: ${{ secrets.TF_API_TOKEN }}
+
+      - name: 'Terraform Init'
+        run: terraform -chdir="./tf-examples/gcp-bucket" init
+        env:
+          GOOGLE_APPLICATION_CREDENTIALS: ${{ secrets.GOOGLE_TF_CREDENTIALS }}
+      
+      - name: 'Terraform Format'
+        run: terraform -chdir="./tf-examples/gcp-bucket" fmt -check
+
+      - name: 'Terraform Plan'
+        run: terraform -chdir="./tf-examples/gcp-bucket" plan
+        env:
+          GOOGLE_APPLICATION_CREDENTIALS: ${{ secrets.GOOGLE_TF_CREDENTIALS }}
+
+      - name: 'Terraform Apply'
+        run: terraform -chdir="./tf-examples/gcp-bucket" apply -auto-approve
+        env:
+          GOOGLE_APPLICATION_CREDENTIALS: ${{ secrets.GOOGLE_TF_CREDENTIALS }}
