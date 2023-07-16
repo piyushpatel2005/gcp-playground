@@ -206,4 +206,36 @@ kubectl get rs
 kubectl apply -f 03-replicaset-declarative/02-loadbalancer-definition.yaml
 kubectl get svc # Access http://<external-ip>/
 kubectl delete -f 03-replicaset-declarative/02-loadbalancer-definition.yaml -f 03-replicaset-declarative/01-replicaset-definition.yaml
+# Deployment
+kubectl apply -f 04-deployment-declarative/01-deployment-definition.yaml
+kubectl apply -f 04-deployment-declarative/02-loadbalancer-definition.yaml
+kubectl get deploy
+kubectl get rs
+kubectl get pods
+kubectl get svc
+kubectl delete -f 03-deployment-declarative/
+
+# Services, create backend and frontend service to expose an application
+kubectl apply -f 04-services-declarative/01-backend-deployment.yml -f 04-services-declarative/02-backend-clusterip-service.yml
+kubectl get all
+kubectl apply -f 04-services-declarative/03-frontend-deployment.yml -f 04-services-declarative/02-frontend-loadbalancer-service.yml
+kubectl get deploy
+kubectl get pods
+kubectl get svc
+kubectl get all
+kubectl delete -f 04-services-declarative/
 ```
+
+Kubernetes NodePort service allows external clients to access pods using network ports opened on K8s nodes. This can be implemented if GKE cluster is public cluster. This should be visible in `get nodes -o wide` output with EXTERNAL IP assigned to it. Node Port range 30000-32768 on Kubenetes nodes. These are not used in production grade implementations. This is only used to test application by external clients via nodes. 
+
+```shell
+kubectl get nodes -o wide
+kubectl apply -f 06-nodeport-declarative
+kubectl get deploy
+kubectl get pods
+kubectl get svc # User Kubernetes External IP with the nodePort 30080, This fails due to firewall
+kubectl get nodes -o wide # Get external IP
+gcloud compute firewall-rules list
+gcloud compute firewall-rules create fw-rule-gke-node-port --allow tcp:30080
+kubectl delete -f 06-nodeport-declarative
+gcloud compute firewall-rules delete fw-rule
