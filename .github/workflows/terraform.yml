@@ -1,7 +1,7 @@
 name: 'Terraform Deployment'
 on: 
   push:
-    branches: ["main", "master"]
+    branches: ["main", "build"]
   pull_request:
 
 defaults:
