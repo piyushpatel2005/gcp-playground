@@ -26,7 +26,7 @@ jobs:
         run: terraform -chdir="./tf-examples/gcp-bucket" init
         env:
           GOOGLE_APPLICATION_CREDENTIALS: ${{ secrets.GOOGLE_TF_CREDENTIALS }}
-          GOOGLE_PROJECT: ${{ env.GOOGLE_PROJECT }}
+          GOOGLE_PROJECT: ${{ vars.GOOGLE_PROJECT }}
       
       # - name: 'Terraform Format'
       #   run: terraform -chdir="./tf-examples/gcp-bucket" fmt -check
@@ -43,12 +43,13 @@ jobs:
           ORGANIZATION_VAR: ${{ vars.ORGANIZATION_VAR }}
           OVERRIDE_VAR: ${{ vars.OVERRIDE_VAR }}
           GOOGLE_PROJECT: ${{ vars.GOOGLE_PROJECT }}
-      # - name: 'Terraform Plan'
-      #   run: terraform -chdir="./tf-examples/gcp-bucket" plan
-      #   timeout-minutes: 1
-      #   env:
-      #     GOOGLE_APPLICATION_CREDENTIALS: ${{ secrets.GOOGLE_TF_CREDENTIALS }}
-      #     GOOGLE_PROJECT: ${{ env.GOOGLE_PROJECT }}
+
+      - name: 'Terraform Plan'
+        run: terraform -chdir="./tf-examples/gcp-bucket" plan
+        timeout-minutes: 1
+        env:
+          GOOGLE_APPLICATION_CREDENTIALS: ${{ secrets.GOOGLE_TF_CREDENTIALS }}
+          GOOGLE_PROJECT: ${{ vars.GOOGLE_PROJECT }}
 
       # - name: 'Terraform Apply'
       #   run: terraform -chdir="./tf-examples/gcp-bucket" apply -auto-approve
