@@ -25,7 +25,7 @@ jobs:
       - name: 'Terraform Init'
         run: terraform -chdir="./tf-examples/gcp-bucket" init
         env:
-          GOOGLE_APPLICATION_CREDENTIALS: ${{ secrets.GOOGLE_TF_CREDENTIALS }}
+          GOOGLE_CREDENTIALS: ${{ secrets.GOOGLE_TF_CREDENTIALS }}
           GOOGLE_PROJECT: ${{ vars.GOOGLE_PROJECT }}
       
       # - name: 'Terraform Format'
@@ -36,12 +36,12 @@ jobs:
         run: echo project=$GOOGLE_PROJECT && terraform -chdir="./tf-examples/gcp-bucket" plan -var project=$GOOGLE_PROJECT
         timeout-minutes: 1
         env:
-          GOOGLE_APPLICATION_CREDENTIALS: ${{ secrets.GOOGLE_TF_CREDENTIALS }}
+          GOOGLE_CREDENTIALS: ${{ secrets.GOOGLE_TF_CREDENTIALS }}
           GOOGLE_PROJECT: ${{ vars.GOOGLE_PROJECT }}
 
       # - name: 'Terraform Apply'
       #   run: terraform -chdir="./tf-examples/gcp-bucket" apply -auto-approve
       #   timeout-minutes: 1
       #   env:
-      #     GOOGLE_APPLICATION_CREDENTIALS: ${{ secrets.GOOGLE_TF_CREDENTIALS }}
+      #     GOOGLE_CREDENTIALS: ${{ secrets.GOOGLE_TF_CREDENTIALS }}
       #     GOOGLE_PROJECT: ${{ env.GOOGLE_PROJECT }}
