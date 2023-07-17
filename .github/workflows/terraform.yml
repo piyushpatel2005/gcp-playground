@@ -40,14 +40,14 @@ jobs:
           GOOGLE_PROJECT: ${{ vars.GOOGLE_PROJECT }}
 
       - name: 'Terraform Apply'
-        run: terraform -chdir="./tf-examples/gcp-bucket" apply -auto-approve
+        run: terraform -chdir="./tf-examples/gcp-bucket" apply -var project=$GOOGLE_PROJECT -auto-approve
         timeout-minutes: 1
         env:
           GOOGLE_CREDENTIALS: ${{ secrets.GOOGLE_TF_CREDENTIALS }}
           GOOGLE_PROJECT: ${{ env.GOOGLE_PROJECT }}
 
       - name: 'Terraform Destroy'
-        run: sleep 60 && terraform -chdir="./tf-examples/gcp-bucket" destroy -auto-approve
+        run: sleep 60 && terraform -chdir="./tf-examples/gcp-bucket" destroy -var project=$GOOGLE_PROJECT -auto-approve
         timeout-minutes: 1
         env:
           GOOGLE_CREDENTIALS: ${{ secrets.GOOGLE_TF_CREDENTIALS }}
