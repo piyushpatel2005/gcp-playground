@@ -45,7 +45,7 @@ jobs:
           GOOGLE_PROJECT: ${{ vars.GOOGLE_PROJECT }}
 
       - name: 'Terraform Plan'
-        run: terraform -chdir="./tf-examples/gcp-bucket" plan
+        run: echo project=$GOOGLE_PROJECT && terraform -chdir="./tf-examples/gcp-bucket" plan -var project=$GOOGLE_PROJECT
         timeout-minutes: 1
         env:
           GOOGLE_APPLICATION_CREDENTIALS: ${{ secrets.GOOGLE_TF_CREDENTIALS }}
