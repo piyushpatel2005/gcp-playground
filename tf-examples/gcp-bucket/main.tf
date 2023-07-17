@@ -5,7 +5,7 @@ resource "random_id" "bucket_prefix" {
 }
 
 resource "google_storage_bucket" "static" {
-    project = "${var.project}"
+    project       = var.project
     name          = "${random_id.bucket_prefix.hex}-new-bucket"
     location      = "US"
     storage_class = "COLDLINE"
