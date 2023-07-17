@@ -31,18 +31,6 @@ jobs:
       # - name: 'Terraform Format'
       #   run: terraform -chdir="./tf-examples/gcp-bucket" fmt -check
 
-      - name: 'Variable check'
-        run: |
-          echo "repository variable : $REPOSITORY_VAR"
-          echo "organization variable : $ORGANIZATION_VAR"
-          echo "overridden variable : $OVERRIDE_VAR"
-          echo "variable from shell environment : $env_var" 
-          echo "variable GOOGLE_PROJECT= $GOOGLE_PROJECT"
-        env:
-          REPOSITORY_VAR: ${{ vars.REPOSITORY_VAR }}
-          ORGANIZATION_VAR: ${{ vars.ORGANIZATION_VAR }}
-          OVERRIDE_VAR: ${{ vars.OVERRIDE_VAR }}
-          GOOGLE_PROJECT: ${{ vars.GOOGLE_PROJECT }}
 
       - name: 'Terraform Plan'
         run: echo project=$GOOGLE_PROJECT && terraform -chdir="./tf-examples/gcp-bucket" plan -var project=$GOOGLE_PROJECT
