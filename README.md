@@ -47,4 +47,4 @@ gcloud enable staroge.googleapis.com
 
 ## Automate with Github Actions
 
-To automate deployment using Terraform, we need service account with Editor access on resources and need Cloud Resource Manager API enabled. The service account credentials file can be store in Github secret.
+To automate deployment using Terraform, we need service account with Editor access on resources and need Cloud Resource Manager API enabled. The service account credentials file can be store in Github secret. Set up secret with name `GOOGLE_TF_CREDENTIALS` which will be referred as `GOOGLE_CREDENTIALS` inside the pipeline. By default this variable will be used to get credentials from the string. `GOOGLE_APPLICATION_CREDENTIALS` is used to specify the JSON filepath, but not actual string data.
