@@ -37,6 +37,7 @@ jobs:
           echo "organization variable : $ORGANIZATION_VAR"
           echo "overridden variable : $OVERRIDE_VAR"
           echo "variable from shell environment : $env_var" 
+          echo "variable GOOGLE_PROJECT= $GOOGLE_PROJECT"
         env:
           REPOSITORY_VAR: ${{ vars.REPOSITORY_VAR }}
           ORGANIZATION_VAR: ${{ vars.ORGANIZATION_VAR }}
