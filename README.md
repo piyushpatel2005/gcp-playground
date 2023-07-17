@@ -29,6 +29,10 @@ sudo apt update && sudo apt-get install terraform
 terraform --help
 ```
 
+## Example Build using Terraform
+
+[![Terraform Deployment for Bucket Creation](https://github.com/piyushpatel2005/gcp-playground/actions/workflows/terraform.yml/badge.svg)](https://github.com/piyushpatel2005/gcp-playground/actions/workflows/terraform.yml)
+
 ## Deploy Dataproc cluster using gcloud command
 
 ```shell
