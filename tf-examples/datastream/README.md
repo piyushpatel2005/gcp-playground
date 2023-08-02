@@ -61,8 +61,8 @@ set GOOGLE_PROJECT=<PROJECT_ID>
 set GOOGLE_APPLICATION_CREDENTIALS=C:\\path\\to\\json_file
 set PASSWORD=<PASSWORD>
 terraform init
-terraform plan -var project=%PROJECT_ID%
-terraform apply -var project=%PROJECT_ID%
-terraform destroy -var project=%PROJECT_ID%
+terraform plan -var project=%PROJECT_ID% -var sql_password=%PASSWORD%
+terraform apply -var project=%PROJECT_ID%-var sql_password=%PASSWORD%
+terraform destroy -var project=%PROJECT_ID%-var sql_password=%PASSWORD%
 terraform console -var project=%PROJECT_ID%
 ```

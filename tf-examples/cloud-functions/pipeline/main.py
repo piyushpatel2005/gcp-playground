@@ -55,7 +55,7 @@ class ConvertToJsonDataFn(beam.DoFn):
 def parse_json(element):
     row = json.loads(element.decode('utf-8'))
     # row = json.loads(element)
-    return JsonData(**row)
+    return row
 
 def print_row(row):
     del row['transformed_file']
@@ -137,8 +137,8 @@ def run():
     parsed_msgs = (p 
                    # | 'ReadFromPubSub' >> beam.io.ReadFromPubSub(subscription=known_args.input_subscription, timestamp_attribute=None)
                    | 'ReadFromPubSub' >> beam.io.ReadFromPubSub(topic=known_args.input_topic)
-                   | 'ParseJson' >> beam.Map(parse_json).with_output_types(JsonData)
-                   # | 'ParseJson' >> beam.ParDo(ConvertToJsonDataFn()).with_outputs('parsed_row', 'unparsed_row').with_output_types(JsonData)
+                   | 'ParseJson' >> beam.Map(parse_json)
+                #    | 'ParseJson' >> beam.ParDo(ConvertToJsonDataFn()).with_outputs('parsed_row', 'unparsed_row').with_output_types(JsonData)
                    )
 
 

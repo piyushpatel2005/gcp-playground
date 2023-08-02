@@ -74,7 +74,17 @@ gcloud functions deploy <fn-name> --set-env-vars FOO=bar ...
 5. For sending email from Cloud function, use SendGrid as it does not allow outbound connections on port 25.
 6. Reduce cold starts by setting a minimum number of instances. By default, Cloud functions scales the number of instances based on the number of requests. This can be changed by setting the number of instances that Cloud functions must keep ready to serve requests. This is great for applications which are latency-sensitive.
 
-
+## Services
+- Enable `Cloud Functions API`
+- Enable `Cloud Build API`
+```shell
+gcloud services list --help
+gcloud services list --available | grep build
+gcloud services enable cloudbuild.googleapis.com
+```
+- Enable `Cloud Dataflow API`
+- Also, we need to configure [Private Google Access](https://cloud.google.com/vpc/docs/configure-private-google-access#configuring_access_to_google_services_from_internal_ips)
+This could also be setup from going into subnet for `us-west1` click EDIT and Enable "Private Google Access"
 
 
 ```shell
@@ -86,10 +96,15 @@ terraform destroy -var project_id=$GOOGLE_PROJECT
 
 # From Cloud console, run Cloud shell and Open Terminal.
 # Copy files from pipeline.
-# Create virtual env using python -m venv env
-# pip install -r requirements.txt
-# source env/bin/activate
-# bash submit-beam.sh
-gsutil cp 3gpp_fn/raw/xml/nokia1.xml gs://essential-oven-380216-input/raw_xml/
-gsutil cp 3gpp_fn/raw/xml/nokia2.xml gs://essential-oven-380216-input/raw_xml/
+# Create virtual env using 
+python -m venv env
+pip install -r requirements.txt
+source env/bin/activate
+gcloud config set project 
+bash submit-beam.sh
+# Nokia test
+gsutil cp 3gpp_fn/raw/xml/nokia1.xml gs://$GOOGLE_PROJECT-input/raw_xml/
+gsutil cp 3gpp_fn/raw/xml/nokia2.xml gs://$GOOGLE_PROJECT-input/raw_xml/
+# Ericsson Test
+gsutil cp 3gpp_fn/raw/xml/ericsson1.xml gs://$GOOGLE_PROJECT-input/raw_xml/
 ```
